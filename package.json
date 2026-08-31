@@ -6,19 +6,42 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ingest:sleeper": "tsx scripts/ingest-sleeper.ts",
+    "ingest:espn": "tsx scripts/ingest-espn.ts",
+    "ingest:nflverse": "tsx scripts/ingest-nflverse.ts",
+    "ingest": "npm run ingest:sleeper && npm run ingest:espn && npm run ingest:nflverse",
+    "test": "vitest run"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "better-sqlite3": "^13.0.3",
     "next": "16.3.0",
+    "prisma": "^7.9.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@tanstack/react-virtual": "^3.14.9",
     "@types/node": "^20",
+    "@types/papaparse": "^5.5.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
-    "typescript": "^5"
+    "papaparse": "^5.5.4",
+    "tsx": "^4.23.8",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
+  },
+  "allowScripts": {
+    "prisma@7.9.1": true,
+    "@prisma/engines@7.9.1": true,
+    "esbuild@0.28.1": true,
+    "unrs-resolver@1.12.2": true,
+    "better-sqlite3@12.11.1": true,
+    "better-sqlite3@13.0.3": true,
+    "fsevents@2.3.3": true
   }
 }

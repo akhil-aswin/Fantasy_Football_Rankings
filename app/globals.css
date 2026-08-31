@@ -1,17 +1,58 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0a0d0b;
+  --bg-elevated: #10150f;
+  --surface: #141a15;
+  --surface-hover: #1a2119;
+  --border: #232b23;
+  --border-strong: #34402f;
+
+  --text: #eaf3ea;
+  --text-muted: #8fa393;
+  --text-faint: #5c6b5f;
+
+  --accent: #3ddc84;
+  --accent-strong: #4fffa0;
+  --accent-dim: rgba(61, 220, 132, 0.14);
+  --warn: #f5a623;
+  --danger: #ff5c5c;
+
+  --pos-qb: #5b9df9;
+  --pos-rb: #3ddc84;
+  --pos-wr: #f5a623;
+  --pos-te: #c77dff;
+
+  /* Instrument Sans carries all UI/body/data text; Instrument Serif is
+     reserved for display moments (the masthead, section eyebrows) — that
+     split is the whole point of a serif/sans editorial pairing. */
+  --font-ui: var(--font-sans), system-ui, sans-serif;
+  --font-data: var(--font-sans), system-ui, sans-serif;
+  --font-serif: var(--font-display), Georgia, serif;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Sharp, brutalist-leaning corners — almost square, not soft SaaS pills. */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html {
   height: 100%;
+  color-scheme: dark;
 }
 
 html,
@@ -22,19 +63,14 @@ body {
 
 body {
   min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  background-image: radial-gradient(circle at 15% 0%, rgba(61, 220, 132, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 10%, rgba(245, 166, 35, 0.05), transparent 40%);
+  background-attachment: fixed;
 }
 
 a {
@@ -42,8 +78,136 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent-strong);
+}
+
+/* scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+  border: 2px solid var(--bg);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ---- shared bits reused across components ---- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: transform 0.15s var(--ease);
+}
+.badge:hover {
+  transform: translateY(-1px);
+}
+
+.badge-qb {
+  color: var(--pos-qb);
+  background: color-mix(in srgb, var(--pos-qb) 16%, transparent);
+  border-color: color-mix(in srgb, var(--pos-qb) 35%, transparent);
+}
+.badge-rb {
+  color: var(--pos-rb);
+  background: color-mix(in srgb, var(--pos-rb) 16%, transparent);
+  border-color: color-mix(in srgb, var(--pos-rb) 35%, transparent);
+}
+.badge-wr {
+  color: var(--pos-wr);
+  background: color-mix(in srgb, var(--pos-wr) 16%, transparent);
+  border-color: color-mix(in srgb, var(--pos-wr) 35%, transparent);
+}
+.badge-te {
+  color: var(--pos-te);
+  background: color-mix(in srgb, var(--pos-te) 16%, transparent);
+  border-color: color-mix(in srgb, var(--pos-te) 35%, transparent);
+}
+
+/* range sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-strong);
+  outline: none;
+  transition: background 0.2s var(--ease);
+}
+input[type="range"]:hover {
+  background: color-mix(in srgb, var(--accent) 25%, var(--border-strong));
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg-elevated);
+  box-shadow: 0 0 0 1px var(--accent);
+  cursor: pointer;
+  transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg-elevated);
+  cursor: pointer;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px var(--space-2);
+  font-size: 13px;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

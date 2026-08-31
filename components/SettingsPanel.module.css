@@ -1,0 +1,151 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  height: fit-content;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.presetRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.presetButton {
+  flex: 1;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-1);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.15s var(--ease);
+}
+.presetButton:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.presetButtonActive {
+  composes: presetButton;
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12.5px;
+}
+
+.fieldLabel {
+  color: var(--text-muted);
+}
+
+.fieldValue {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--accent-strong);
+  font-size: 12px;
+}
+
+.gridInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.miniField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.miniLabel {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.miniField input {
+  width: 100%;
+}
+
+.disclosure {
+  border-top: 1px dashed var(--border);
+  padding-top: var(--space-3);
+}
+
+.disclosure summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s var(--ease);
+}
+.disclosure summary:hover {
+  color: var(--accent-strong);
+}
+.disclosure summary::-webkit-details-marker {
+  display: none;
+}
+.disclosure summary::before {
+  content: "▸";
+  display: inline-block;
+  transition: transform 0.2s var(--ease);
+  font-size: 10px;
+}
+.disclosure[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.advancedBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+.resetButton {
+  align-self: flex-start;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
+  transition: all 0.15s var(--ease);
+}
+.resetButton:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}

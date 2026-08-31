@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma-client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Player {
+  id          String   @id // Sleeper player_id, the canonical cross-source key
+  espnId      String?  @unique
+  gsisId      String?  @unique // nflverse's join key, sourced from Sleeper's player dump
+  name        String
+  position    String
+  team        String?
+  status      String?
+  updatedAt   DateTime @updatedAt
+
+  projections ProjectionStatLine[]
+  actuals     ActualStatLine[]
+
+  @@index([position])
+}
+
+// Projected stat line for a player from one source, for a season (week 0)
+// or a specific week. week=0 is a sentinel for "season-long" (SQLite composite
+// unique indexes don't support NULL lookups reliably, so we avoid a nullable
+// column here rather than using null-as-season-long).
+model ProjectionStatLine {
+  id           Int    @id @default(autoincrement())
+  playerId     String
+  player       Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  source       String // "sleeper" | "espn"
+  season       Int
+  week         Int // 0 = season-long projection
+
+  games        Float?
+  passYds      Float @default(0)
+  passTd       Float @default(0)
+  passInt      Float @default(0)
+  rushYds      Float @default(0)
+  rushTd       Float @default(0)
+  rec          Float @default(0)
+  recYds       Float @default(0)
+  recTd        Float @default(0)
+  fumblesLost  Float @default(0)
+
+  @@unique([playerId, source, season, week])
+  @@index([source, season])
+}
+
+// Actual stat line for a player, for a given season+week, from a source.
+model ActualStatLine {
+  id           Int    @id @default(autoincrement())
+  playerId     String
+  player       Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  source       String // "nflverse" | "sleeper"
+  season       Int
+  week         Int
+
+  passYds      Float @default(0)
+  passTd       Float @default(0)
+  passInt      Float @default(0)
+  rushYds      Float @default(0)
+  rushTd       Float @default(0)
+  rec          Float @default(0)
+  recYds       Float @default(0)
+  recTd        Float @default(0)
+  fumblesLost  Float @default(0)
+
+  @@unique([playerId, source, season, week])
+  @@index([source, season])
+}
